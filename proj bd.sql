@@ -66,16 +66,15 @@ VALUES
 (2, '2024-03-18', 2, 2, 3),
 (3, '2024-03-20', 2, 1, 3); 
 
-
 -- Notificações
-INSERT INTO public.notificacao (id_usuario, mensagem, data_notificacao)
+INSERT INTO public.notificacao (id_usuario, mensagem, data_notificacao, hora_notificacao)
 VALUES
-(3, 'Reserva confirmada para o espaço Futebol em 15/03/2024', '2024-03-10'),
-(3, 'Reserva confirmada para o espaço Ténis em 18/03/2024', '2024-03-12'),
-(3, 'Reserva confirmada para o espaço Basquetebol em 20/03/2024', '2024-03-15'),
-(2, 'Manutenção programada para o espaço Futebol em 01/03/2024', '2024-02-28'),
-(2, 'Manutenção programada para o espaço Basquetebol em 05/03/2024', '2024-03-02'),
-(2, 'Manutenção programada para o espaço Futebol em 10/03/2024', '2024-03-07');
+(3, 'Reserva confirmada para o espaço Futebol em 15/03/2024', '2024-03-10', '10:30:00'),
+(3, 'Reserva confirmada para o espaço Ténis em 18/03/2024', '2024-03-12', '11:15:00'),
+(3, 'Reserva confirmada para o espaço Basquetebol em 20/03/2024', '2024-03-15', '09:45:00'),
+(2, 'Manutenção programada para o espaço Futebol em 01/03/2024', '2024-02-28', '14:00:00'),
+(2, 'Manutenção programada para o espaço Basquetebol em 05/03/2024', '2024-03-02', '15:30:00'),
+(2, 'Manutenção programada para o espaço Futebol em 10/03/2024', '2024-03-07', '16:45:00');
 
 
 
