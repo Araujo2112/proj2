@@ -1,5 +1,6 @@
 package com.example.projetov2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -14,21 +15,15 @@ public class TipoUsuario {
     @Column(nullable = false, length = 100)
     private String tipo;
 
-    // Relacionamento com Usuario
-    @OneToMany(mappedBy = "tipoUsuario")
-    private List<Usuario> usuarios;
-
     public TipoUsuario() {}
 
-    public TipoUsuario(Integer idTipoUsuario, List<Usuario> usuarios, String tipo) {
+    public TipoUsuario(Integer idTipoUsuario, String tipo) {
         this.idTipoUsuario = idTipoUsuario;
-        this.usuarios = usuarios;
         this.tipo = tipo;
     }
 
-    public TipoUsuario(String tipo, List<Usuario> usuarios) {
+    public TipoUsuario(String tipo) {
         this.tipo = tipo;
-        this.usuarios = usuarios;
     }
 
     public Integer getIdTipoUsuario() {
@@ -45,13 +40,5 @@ public class TipoUsuario {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
-    }
-
-    public List<Usuario> getUsuarios() {
-        return usuarios;
-    }
-
-    public void setUsuarios(List<Usuario> usuarios) {
-        this.usuarios = usuarios;
     }
 }

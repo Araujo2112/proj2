@@ -1,6 +1,7 @@
 package com.example.projetov2.controller;
 
 import com.example.projetov2.dto.UsuarioDTO;
+import com.example.projetov2.dto.UsuarioRequestDTO;
 import com.example.projetov2.model.Usuario;
 import com.example.projetov2.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +36,8 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioDTO> criar(@RequestBody Usuario usuario) {
-        UsuarioDTO usuarioCriado = usuarioService.criar(usuario);
+    public ResponseEntity<UsuarioDTO> criar(@RequestBody UsuarioRequestDTO dto) {
+        UsuarioDTO usuarioCriado = usuarioService.criarAPartirDTO(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioCriado);
     }
 

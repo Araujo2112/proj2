@@ -16,17 +16,12 @@ public class CodPostal {
     @Column(nullable = false, length = 100)
     private String localidade;
 
-    @OneToMany(mappedBy = "codPostal", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Usuario> usuarios;
-
     public CodPostal() {
     }
 
-    public CodPostal(String idCodPostal, String localidade, List<Usuario> usuarios) {
+    public CodPostal(String idCodPostal, String localidade) {
         this.idCodPostal = idCodPostal;
         this.localidade = localidade;
-        this.usuarios = usuarios;
     }
 
     public String getIdCodPostal() {
@@ -43,14 +38,6 @@ public class CodPostal {
 
     public void setLocalidade(String localidade) {
         this.localidade = localidade;
-    }
-
-    public List<Usuario> getUsuarios() {
-        return usuarios;
-    }
-
-    public void setUsuarios(List<Usuario> usuarios) {
-        this.usuarios = usuarios;
     }
 }
 

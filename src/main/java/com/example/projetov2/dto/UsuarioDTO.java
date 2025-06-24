@@ -1,5 +1,6 @@
 package com.example.projetov2.dto;
 
+import com.example.projetov2.model.CodPostal;
 import com.example.projetov2.model.Usuario;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -12,10 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "rua",
         "nPorta",
         "codPostal",
-        "tipoUsuario",
-        "reservas",
-        "pagamentos",
-        "notificacoes"
+        "tipoUsuario"
 })
 public class UsuarioDTO {
 
@@ -28,15 +26,10 @@ public class UsuarioDTO {
     @JsonProperty("nPorta")
     private Integer nPorta;
 
-    private String codPostal;
+    private CodPostal codPostal;
 
-    private Integer tipoUsuario; // Novo campo no DTO
+    private String tipoUsuario;
 
-    private int reservas;
-    private int pagamentos;
-    private int notificacoes;
-
-    // Construtor que preenche tudo
     public UsuarioDTO(Usuario usuario) {
         this.idUsuario = usuario.getIdUsuario();
         this.nome = usuario.getNome();
@@ -44,13 +37,10 @@ public class UsuarioDTO {
         this.nif = usuario.getNif();
         this.rua = usuario.getRua();
         this.nPorta = usuario.getNPorta();
-        this.codPostal = usuario.getCodPostal() != null ? usuario.getCodPostal().getIdCodPostal() : null;
-        this.tipoUsuario = usuario.getTipoUsuario() != null ? usuario.getTipoUsuario().getIdTipoUsuario() : null;
-        this.reservas = usuario.getReservas() != null ? usuario.getReservas().size() : 0;
-        this.pagamentos = usuario.getPagamentos() != null ? usuario.getPagamentos().size() : 0;
-        this.notificacoes = usuario.getNotificacoes() != null ? usuario.getNotificacoes().size() : 0;
+        this.codPostal = usuario.getCodPostal();  // <-- Agora é um objeto completo
+        this.tipoUsuario = usuario.getTipoUsuario() != null ? usuario.getTipoUsuario().getTipo() : null;
     }
-    
+
     public Integer getIdUsuario() { return idUsuario; }
     public String getNome() { return nome; }
     public String getTel() { return tel; }
@@ -60,14 +50,7 @@ public class UsuarioDTO {
     @JsonProperty("nPorta")
     public Integer getNPorta() { return nPorta; }
 
-    public String getCodPostal() { return codPostal; }
+    public CodPostal getCodPostal() { return codPostal; }
 
-    public Integer getTipoUsuario() { return tipoUsuario; }
-
-    public int getReservas() { return reservas; }
-    public int getPagamentos() { return pagamentos; }
-    public int getNotificacoes() { return notificacoes; }
+    public String getTipoUsuario() { return tipoUsuario; }
 }
-
-
-

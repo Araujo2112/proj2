@@ -9,20 +9,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tipousuarios")
+@RequestMapping("/tipos-usuarios")
 public class TipoUsuarioController {
-
     @Autowired
     private TipoUsuarioService tipoUsuarioService;
 
-    // GET all tipos de usuários
     @GetMapping
     public ResponseEntity<List<TipoUsuario>> listarTodos() {
         List<TipoUsuario> tiposUsuarios = tipoUsuarioService.listarTodos();
         return ResponseEntity.ok(tiposUsuarios);
     }
 
-    // GET tipo de usuário por id
     @GetMapping("/{id}")
     public ResponseEntity<TipoUsuario> buscarPorId(@PathVariable Integer id) {
         return tipoUsuarioService.buscarPorId(id)
@@ -30,14 +27,12 @@ public class TipoUsuarioController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // POST cria um novo tipo de usuário
     @PostMapping
     public ResponseEntity<TipoUsuario> criar(@RequestBody TipoUsuario tipoUsuario) {
         TipoUsuario novoTipoUsuario = tipoUsuarioService.criar(tipoUsuario);
         return ResponseEntity.ok(novoTipoUsuario);
     }
 
-    // PUT atualiza um tipo de usuário existente
     @PutMapping("/{id}")
     public ResponseEntity<TipoUsuario> atualizar(@PathVariable Integer id, @RequestBody TipoUsuario tipoUsuarioAtualizado) {
         try {
@@ -48,7 +43,6 @@ public class TipoUsuarioController {
         }
     }
 
-    // DELETE um tipo de usuário
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Integer id) {
         try {

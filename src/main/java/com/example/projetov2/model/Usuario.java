@@ -39,15 +39,6 @@ public class Usuario {
     @JsonIgnore
     private TipoUsuario tipoUsuario;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reserva> reservas;
-
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Pagamento> pagamentos;
-
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Notificacao> notificacoes;
-
     public Usuario() {}
 
     public Usuario(String nome, String tel, Integer nif) {
@@ -56,7 +47,7 @@ public class Usuario {
         this.nif = nif;
     }
 
-    public Usuario(String nome, String tel, Integer nif, String rua, Integer nPorta, CodPostal codPostal, TipoUsuario tipoUsuario, List<Notificacao> notificacoes, List<Reserva> reservas, List<Pagamento> pagamentos) {
+    public Usuario(String nome, String tel, Integer nif, String rua, Integer nPorta, CodPostal codPostal, TipoUsuario tipoUsuario) {
         this.nome = nome;
         this.tel = tel;
         this.nif = nif;
@@ -64,12 +55,9 @@ public class Usuario {
         this.nPorta = nPorta;
         this.codPostal = codPostal;
         this.tipoUsuario = tipoUsuario;
-        this.notificacoes = notificacoes;
-        this.reservas = reservas;
-        this.pagamentos = pagamentos;
     }
 
-    public Usuario(Integer idUsuario, String nome, String tel, Integer nif, String rua, Integer nPorta, CodPostal codPostal, TipoUsuario tipoUsuario, List<Reserva> reservas, List<Pagamento> pagamentos, List<Notificacao> notificacoes) {
+    public Usuario(Integer idUsuario, String nome, String tel, Integer nif, String rua, Integer nPorta, CodPostal codPostal, TipoUsuario tipoUsuario) {
         this.idUsuario = idUsuario;
         this.nome = nome;
         this.tel = tel;
@@ -78,9 +66,6 @@ public class Usuario {
         this.nPorta = nPorta;
         this.codPostal = codPostal;
         this.tipoUsuario = tipoUsuario;
-        this.reservas = reservas;
-        this.pagamentos = pagamentos;
-        this.notificacoes = notificacoes;
     }
 
 
@@ -148,29 +133,6 @@ public class Usuario {
         this.tipoUsuario = tipoUsuario;
     }
 
-    public List<Reserva> getReservas() {
-        return reservas;
-    }
-
-    public void setReservas(List<Reserva> reservas) {
-        this.reservas = reservas;
-    }
-
-    public List<Pagamento> getPagamentos() {
-        return pagamentos;
-    }
-
-    public void setPagamentos(List<Pagamento> pagamentos) {
-        this.pagamentos = pagamentos;
-    }
-
-    public List<Notificacao> getNotificacoes() {
-        return notificacoes;
-    }
-
-    public void setNotificacoes(List<Notificacao> notificacoes) {
-        this.notificacoes = notificacoes;
-    }
 
     @Override
     public String toString() {
@@ -183,9 +145,6 @@ public class Usuario {
                 ", nPorta=" + nPorta +
                 ", codPostal=" + (codPostal != null ? codPostal.getIdCodPostal() : null) +
                 ", tipoUsuario=" + (tipoUsuario != null ? tipoUsuario.getIdTipoUsuario() : null) +
-                ", reservas=" + (reservas != null ? reservas.size() : 0) +
-                ", pagamentos=" + (pagamentos != null ? pagamentos.size() : 0) +
-                ", notificacoes=" + (notificacoes != null ? notificacoes.size() : 0) +
                 '}';
     }
 }

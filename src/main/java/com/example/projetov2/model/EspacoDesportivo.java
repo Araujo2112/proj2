@@ -31,23 +31,15 @@ public class EspacoDesportivo {
     @Column(nullable = false)
     private Boolean disponibilidade;
 
-    @OneToMany(mappedBy = "espacoDesportivo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reserva> reservas;
-
-    @OneToMany(mappedBy = "espacoDesportivo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Manutencao> manutencoes;
-
     public EspacoDesportivo() {}
 
-    public EspacoDesportivo(Integer idEspaco, TipoEspacoDesportivo tipoEspaco, Integer capacidade, String lote, BigDecimal precoHora, Boolean disponibilidade, List<Reserva> reservas, List<Manutencao> manutencoes) {
+    public EspacoDesportivo(Integer idEspaco, TipoEspacoDesportivo tipoEspaco, Integer capacidade, String lote, BigDecimal precoHora, Boolean disponibilidade) {
         this.idEspaco = idEspaco;
         this.tipoEspaco = tipoEspaco;
         this.capacidade = capacidade;
         this.lote = lote;
         this.precoHora = precoHora;
         this.disponibilidade = disponibilidade;
-        this.reservas = reservas;
-        this.manutencoes = manutencoes;
     }
 
     public Integer getIdEspaco() {
@@ -96,22 +88,6 @@ public class EspacoDesportivo {
 
     public void setDisponibilidade(Boolean disponibilidade) {
         this.disponibilidade = disponibilidade;
-    }
-
-    public List<Reserva> getReservas() {
-        return reservas;
-    }
-
-    public void setReservas(List<Reserva> reservas) {
-        this.reservas = reservas;
-    }
-
-    public List<Manutencao> getManutencoes() {
-        return manutencoes;
-    }
-
-    public void setManutencoes(List<Manutencao> manutencoes) {
-        this.manutencoes = manutencoes;
     }
 }
 

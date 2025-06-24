@@ -15,21 +15,16 @@ public class TipoPagamento {
     @Column(nullable = false, length = 100)
     private String nome;
 
-    @OneToMany(mappedBy = "tipoPagamento")
-    private List<Pagamento> pagamentos;
-
     public TipoPagamento() {
     }
 
-    public TipoPagamento(Integer idTipoPag, List<Pagamento> pagamentos, String nome) {
+    public TipoPagamento(Integer idTipoPag, String nome) {
         this.idTipoPag = idTipoPag;
-        this.pagamentos = pagamentos;
         this.nome = nome;
     }
 
-    public TipoPagamento(String nome, List<Pagamento> pagamentos) {
+    public TipoPagamento(String nome) {
         this.nome = nome;
-        this.pagamentos = pagamentos;
     }
 
     public String getNome() {
@@ -38,14 +33,6 @@ public class TipoPagamento {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public List<Pagamento> getPagamentos() {
-        return pagamentos;
-    }
-
-    public void setPagamentos(List<Pagamento> pagamentos) {
-        this.pagamentos = pagamentos;
     }
 
     public Integer getIdTipoPag() {

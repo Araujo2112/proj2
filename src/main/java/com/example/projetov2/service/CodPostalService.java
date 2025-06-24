@@ -10,7 +10,6 @@ import java.util.Optional;
 
 @Service
 public class CodPostalService {
-
     private final CodPostalRepository codPostalRepository;
 
     @Autowired
@@ -18,22 +17,18 @@ public class CodPostalService {
         this.codPostalRepository = codPostalRepository;
     }
 
-    // Listar todos os códigos postais
     public List<CodPostal> getAllCodPostais() {
         return codPostalRepository.findAll();
     }
 
-    // Buscar um código postal específico
     public Optional<CodPostal> getCodPostalById(String idCodPostal) {
         return codPostalRepository.findById(idCodPostal);
     }
 
-    // Criar um novo código postal
     public CodPostal createCodPostal(CodPostal codPostal) {
         return codPostalRepository.save(codPostal);
     }
 
-    // Atualizar um código postal existente
     public CodPostal updateCodPostal(String idCodPostal, CodPostal updatedCodPostal) {
         return codPostalRepository.findById(idCodPostal).map(existingCodPostal -> {
             existingCodPostal.setLocalidade(updatedCodPostal.getLocalidade());
@@ -41,7 +36,6 @@ public class CodPostalService {
         }).orElseThrow(() -> new RuntimeException("Código Postal não encontrado!"));
     }
 
-    // Deletar um código postal
     public void deleteCodPostal(String idCodPostal) {
         codPostalRepository.deleteById(idCodPostal);
     }

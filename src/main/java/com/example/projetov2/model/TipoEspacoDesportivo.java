@@ -16,9 +16,6 @@ public class TipoEspacoDesportivo {
     @Column(nullable = false, length = 50, unique = true)
     private String tipo;
 
-    @OneToMany(mappedBy = "tipoEspaco", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EspacoDesportivo> espacosDesportivos;
-
     public TipoEspacoDesportivo() {}
 
     public TipoEspacoDesportivo(Integer idTipoEspaco, String tipo) {
@@ -40,14 +37,6 @@ public class TipoEspacoDesportivo {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
-    }
-
-    public List<EspacoDesportivo> getEspacosDesportivos() {
-        return espacosDesportivos;
-    }
-
-    public void setEspacosDesportivos(List<EspacoDesportivo> espacosDesportivos) {
-        this.espacosDesportivos = espacosDesportivos;
     }
 }
 

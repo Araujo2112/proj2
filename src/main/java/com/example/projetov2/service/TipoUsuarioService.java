@@ -30,10 +30,7 @@ public class TipoUsuarioService {
 
         if (tipoUsuarioExistente.isPresent()) {
             TipoUsuario tipoUsuario = tipoUsuarioExistente.get();
-
             tipoUsuario.setTipo(tipoUsuarioAtualizado.getTipo());
-            tipoUsuario.setUsuarios(tipoUsuarioAtualizado.getUsuarios());
-
             return tipoUsuarioRepository.save(tipoUsuario);
         } else {
             throw new RuntimeException("Tipo de usuário com ID " + id + " não encontrado.");
