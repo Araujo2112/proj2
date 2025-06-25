@@ -24,17 +24,14 @@ public class Reserva {
 
     @ManyToOne
     @JoinColumn(name = "idEstado", nullable = false)
-    @JsonIgnore
     private TipoEstado estado;
 
     @ManyToOne
     @JoinColumn(name = "idEspaco", nullable = false)
-    @JsonIgnore
     private EspacoDesportivo espacoDesportivo;
 
     @ManyToOne
     @JoinColumn(name = "idUsuario", nullable = false)
-    @JsonIgnore
     private Usuario usuario;
 
     public Reserva() {

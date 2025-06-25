@@ -16,22 +16,18 @@ public class Pagamento {
 
     @ManyToOne
     @JoinColumn(name = "idTipoPag")
-    @JsonIgnore
     private TipoPagamento tipoPagamento;
 
     @ManyToOne
     @JoinColumn(name = "idUsuario", nullable = false)
-    @JsonIgnore
     private Usuario usuario;
 
     @ManyToOne
     @JoinColumn(name = "idEstado", nullable = false)
-    @JsonIgnore
     private TipoEstado estado;
 
     @ManyToOne
     @JoinColumn(name = "idReserva", nullable = false)
-    @JsonIgnore
     private Reserva reserva;
 
     public Pagamento() {}
