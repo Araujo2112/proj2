@@ -1,7 +1,9 @@
 package com.example.projetov2.service;
 
 import com.example.projetov2.model.Reserva;
+import com.example.projetov2.model.TipoEstado;
 import com.example.projetov2.repository.ReservaRepository;
+import com.example.projetov2.repository.TipoEstadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,12 @@ public class ReservaService {
     @Autowired
     private ReservaRepository reservaRepository;
 
+    @Autowired
+    private PagamentoService pagamentoService;
+
+    @Autowired
+    private TipoEstadoRepository tipoEstadoRepository;
+
     public List<Reserva> listarTodas() {
         return reservaRepository.findAll();
     }
@@ -23,7 +31,11 @@ public class ReservaService {
     }
 
     public Reserva criar(Reserva reserva) {
-        return reservaRepository.save(reserva);
+        Reserva novaReserva = reservaRepository.save(reserva);
+        TipoEstado estadoEmEspera = tipoEstadoRepository.findById(3).orElseThrow();
+        pagamentoService.criarPagamentoEmEspera(novaReserva, estadoEmEspera);
+
+        return novaReserva;
     }
 
     public Reserva atualizar(Integer id, Reserva reservaAtualizada) {

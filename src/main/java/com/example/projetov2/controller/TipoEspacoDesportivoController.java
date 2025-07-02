@@ -17,7 +17,6 @@ public class TipoEspacoDesportivoController {
     @Autowired
     private TipoEspacoDesportivoService tipoEspacoDesportivoService;
 
-    // Listar todos os tipos de espaço desportivo
     @GetMapping
     public ResponseEntity<List<TipoEspacoDesportivo>> listarTodos() {
         List<TipoEspacoDesportivo> tiposEspaco = tipoEspacoDesportivoService.listarTodos();

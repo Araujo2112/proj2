@@ -1,6 +1,8 @@
 package com.example.projetov2.service;
 
 import com.example.projetov2.model.Pagamento;
+import com.example.projetov2.model.Reserva;
+import com.example.projetov2.model.TipoEstado;
 import com.example.projetov2.repository.PagamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,22 +16,18 @@ public class PagamentoService {
     @Autowired
     private PagamentoRepository pagamentoRepository;
 
-    // Listar todos os pagamentos
     public List<Pagamento> listarTodos() {
         return pagamentoRepository.findAll();
     }
 
-    // Buscar pagamento por ID
     public Optional<Pagamento> buscarPorId(Integer id) {
         return pagamentoRepository.findById(id);
     }
 
-    // Criar um novo pagamento
     public Pagamento criar(Pagamento pagamento) {
         return pagamentoRepository.save(pagamento);
     }
 
-    // Atualizar um pagamento existente
     public Pagamento atualizar(Integer id, Pagamento pagamentoAtualizado) {
         Optional<Pagamento> pagamentoExistente = pagamentoRepository.findById(id);
 
@@ -48,13 +46,23 @@ public class PagamentoService {
         }
     }
 
-    // Deletar um pagamento pelo ID
     public void deletar(Integer id) {
         if (pagamentoRepository.existsById(id)) {
             pagamentoRepository.deleteById(id);
         } else {
             throw new RuntimeException("Pagamento com ID " + id + " não encontrado.");
         }
+    }
+
+    public void criarPagamentoEmEspera(Reserva reserva, TipoEstado estado) {
+        Pagamento pagamento = new Pagamento();
+        pagamento.setReserva(reserva);
+        pagamento.setUsuario(reserva.getUsuario());
+        pagamento.setEstado(estado);
+        pagamento.setDtPagamento(null);
+        pagamento.setTipoPagamento(null);
+
+        pagamentoRepository.save(pagamento);
     }
 }
 

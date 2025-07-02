@@ -25,8 +25,6 @@ public class TipoPagamentoController {
         return ResponseEntity.ok(novoTipoPagamento);
     }
 
-    // podes já meter aqui outros métodos se quiseres
-
     @GetMapping
     public ResponseEntity<List<TipoPagamento>> getAllTipoPagamentos() {
         return ResponseEntity.ok(tipoPagamentoService.getAllTipoPagamentos());

@@ -3,6 +3,7 @@ package com.example.projetov2.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -16,7 +17,6 @@ public class EspacoDesportivo {
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_espaco", nullable = false)
-    @JsonIgnore
     private TipoEspacoDesportivo tipoEspaco;
 
     @Column(nullable = false)
@@ -31,15 +31,23 @@ public class EspacoDesportivo {
     @Column(nullable = false)
     private Boolean disponibilidade;
 
+    @Column(nullable = false)
+    private LocalTime horaAbertura;
+
+    @Column(nullable = false)
+    private LocalTime horaFecho;
+
     public EspacoDesportivo() {}
 
-    public EspacoDesportivo(Integer idEspaco, TipoEspacoDesportivo tipoEspaco, Integer capacidade, String lote, BigDecimal precoHora, Boolean disponibilidade) {
+    public EspacoDesportivo(Integer idEspaco, TipoEspacoDesportivo tipoEspaco, Integer capacidade, String lote, BigDecimal precoHora, Boolean disponibilidade, LocalTime horaAbertura, LocalTime horaFecho) {
         this.idEspaco = idEspaco;
         this.tipoEspaco = tipoEspaco;
         this.capacidade = capacidade;
         this.lote = lote;
         this.precoHora = precoHora;
         this.disponibilidade = disponibilidade;
+        this.horaAbertura = horaAbertura;
+        this.horaFecho = horaFecho;
     }
 
     public Integer getIdEspaco() {
@@ -88,6 +96,22 @@ public class EspacoDesportivo {
 
     public void setDisponibilidade(Boolean disponibilidade) {
         this.disponibilidade = disponibilidade;
+    }
+
+    public LocalTime getHoraAbertura() {
+        return horaAbertura;
+    }
+
+    public void setHoraAbertura(LocalTime horaAbertura) {
+        this.horaAbertura = horaAbertura;
+    }
+
+    public LocalTime getHoraFecho() {
+        return horaFecho;
+    }
+
+    public void setHoraFecho(LocalTime horaFecho) {
+        this.horaFecho = horaFecho;
     }
 }
 

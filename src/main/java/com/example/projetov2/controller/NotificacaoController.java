@@ -31,7 +31,6 @@ public class NotificacaoController {
 
     @PostMapping
     public ResponseEntity<Notificacao> criar(@RequestBody Notificacao notificacao) {
-        // Definindo a data e hora da notificação AUTOMATICAMENTE
         notificacao.setDataNotificacao(LocalDate.now());
         notificacao.setHoraNotificacao(LocalTime.now());
 

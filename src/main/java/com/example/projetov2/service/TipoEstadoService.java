@@ -37,7 +37,6 @@ public class TipoEstadoService {
         }).orElseThrow(() -> new RuntimeException("TipoEstado com id " + idEstado + " não encontrado."));
     }
 
-    // Deletar tipo estado
     public void deleteTipoEstado(Integer idEstado) {
         tipoEstadoRepository.deleteById(idEstado);
     }
