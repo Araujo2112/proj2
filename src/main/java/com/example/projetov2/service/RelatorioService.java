@@ -12,12 +12,10 @@ import com.itextpdf.text.pdf.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.*;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,6 +23,8 @@ import java.util.stream.Stream;
 
 @Service
 public class RelatorioService {
+
+    private static final String PASTA_RELATORIOS = "relatorios/";
 
     @Autowired
     private PagamentoRepository pagamentoRepository;
@@ -62,32 +62,9 @@ public class RelatorioService {
         relatorioRepository.delete(existente);
     }
 
-    public void criarRelatorioFaturacao(LocalDate de, LocalDate ate) {
-        String nomeFicheiro = "relatorio_faturacao_" + de + "_a_" + ate + ".pdf";
-        gerarRelatorioFaturacaoPDF(de, ate, nomeFicheiro);
-
-        TipoRelatorio tipo = tipoRelatorioRepository.findById(1)
-                .orElseThrow(() -> new RuntimeException("Tipo de relatório faturação não encontrado"));
-
-        Relatorio novo = new Relatorio();
-        novo.setDescricao("Relatório de faturação de " + de + " a " + ate);
-        novo.setDataCriacao(LocalDate.now());
-        novo.setDataGeracao(LocalDate.now());
-        novo.setDataInicio(de);
-        novo.setDataFim(ate);
-        novo.setCaminhoPdf("/pdfs/" + nomeFicheiro);
-        novo.setIdTipo(tipo);
-        relatorioRepository.save(novo);
-    }
-
-    public ByteArrayInputStream gerarRelatorioFaturacaoPDF(LocalDate de, LocalDate ate) {
-        return gerarRelatorioFaturacaoPDF(de, ate, null);
-    }
-
-    private ByteArrayInputStream gerarRelatorioFaturacaoPDF(LocalDate de, LocalDate ate, String nomeFicheiro) {
+    public File gerarRelatorioFaturacao(LocalDate de, LocalDate ate) {
         try {
-            List<Pagamento> pagamentos = pagamentoRepository.findByEstado_EstadoAndDtPagamentoBetween(
-                    "Pago", de, ate);
+            List<Pagamento> pagamentos = pagamentoRepository.findByEstado_EstadoAndDtPagamentoBetween("Feito", de, ate);
 
             List<FaturacaoDTO> dtos = pagamentos.stream().map(p -> {
                 var r = p.getReserva();
@@ -108,18 +85,21 @@ public class RelatorioService {
                 return dto;
             }).collect(Collectors.toList());
 
+            File pasta = new File(PASTA_RELATORIOS);
+            if (!pasta.exists()) pasta.mkdirs();
+
+            String nomeFicheiro = "relatorio_faturacao_" + de + "_a_" + ate + ".pdf";
+            File ficheiro = new File(pasta, nomeFicheiro);
+
             Document document = new Document();
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            PdfWriter.getInstance(document, out);
+            PdfWriter.getInstance(document, new FileOutputStream(ficheiro));
             document.open();
 
             Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16);
             Font fontHeader = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
             Font fontBody = FontFactory.getFont(FontFactory.HELVETICA, 10);
 
-            Paragraph title = new Paragraph("Relatório de Faturação", fontTitle);
-            title.setAlignment(Element.ALIGN_CENTER);
-            document.add(title);
+            document.add(new Paragraph("Relatório de Faturação", fontTitle));
             document.add(new Paragraph("Período: " + de + " até " + ate, fontBody));
             document.add(new Paragraph(" "));
 
@@ -129,10 +109,10 @@ public class RelatorioService {
 
             Stream.of("ID", "Cliente", "Data Pagamento", "Tipo", "Espaço", "Data Reserva", "Horário", "Valor")
                     .forEach(header -> {
-                        PdfPCell cell = new PdfPCell(new Phrase(header, fontHeader));
-                        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
-                        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                        table.addCell(cell);
+                        PdfPCell headerCell = new PdfPCell(new Phrase(header, fontHeader));
+                        headerCell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                        headerCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                        table.addCell(headerCell);
                     });
 
             for (FaturacaoDTO dto : dtos) {
@@ -149,11 +129,34 @@ public class RelatorioService {
             document.add(table);
             document.close();
 
-            return new ByteArrayInputStream(out.toByteArray());
+            TipoRelatorio tipo = tipoRelatorioRepository.findById(1)
+                    .orElseThrow(() -> new RuntimeException("Tipo de relatório não encontrado"));
+
+            Relatorio relatorio = new Relatorio();
+            relatorio.setDataCriacao(LocalDate.now());
+            relatorio.setDataInicio(de);
+            relatorio.setDataFim(ate);
+            relatorio.setDescricao("Faturação de " + de + " a " + ate);
+            relatorio.setIdTipo(tipo);
+            relatorio.setCaminhoPdf(ficheiro.getAbsolutePath());
+            relatorio.setDataGeracao(LocalDate.now());
+
+            relatorioRepository.save(relatorio);
+
+            return ficheiro;
 
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public byte[] downloadPdf(String caminhoAbsoluto) {
+        try {
+            File ficheiro = new File(caminhoAbsoluto);
+            return java.nio.file.Files.readAllBytes(ficheiro.toPath());
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao ler o PDF.", e);
         }
     }
 }
