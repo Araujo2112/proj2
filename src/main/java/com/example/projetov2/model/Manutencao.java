@@ -1,58 +1,42 @@
 package com.example.projetov2.model;
 
-// Importações necessárias
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
-// Define que essa classe representa uma entidade do JPA
 @Entity
-// Define o nome da tabela na BD
 @Table(name = "manutencao")
 public class Manutencao {
 
-    // Identificador único da manutenção (chave primária com autoincremento)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idManu;
 
-    // Data de início da manutenção (obrigatória)
     @Column(nullable = false)
     private LocalDate dtIni;
 
-    // Data de fim da manutenção (pode ser nula se estiver em andamento)
     private LocalDate dtFim;
 
-    // Texto descritivo sobre a.html manutenção
     private String descricao;
 
-    // Estado da manutenção — obrigatório
     @ManyToOne
     @JoinColumn(name = "idEstado", nullable = false)
-    @JsonIgnore
     private TipoEstado estado;
 
-    // Espaço desportivo que está em manutenção — obrigatório
     @ManyToOne
     @JoinColumn(name = "idEspaco", nullable = false)
-    @JsonIgnore
     private EspacoDesportivo espacoDesportivo;
 
-    // Usuário responsável pela manutenção — obrigatório
     @ManyToOne
     @JoinColumn(name = "idUsuario", nullable = false)
-    @JsonIgnore
     private Usuario usuario;
 
-    // Custo total da manutenção (obrigatório)
     @Column(nullable = false)
     private Double custo;
 
-    // Construtor padrão obrigatório para JPA
     public Manutencao() {
     }
 
-    // Construtor com todos os campos (inclusive ID)
     public Manutencao(Integer idManu, LocalDate dtIni, LocalDate dtFim, String descricao, EspacoDesportivo espacoDesportivo, TipoEstado estado, Usuario usuario, Double custo) {
         this.idManu = idManu;
         this.dtIni = dtIni;
@@ -64,7 +48,6 @@ public class Manutencao {
         this.custo = custo;
     }
 
-    // Construtor sem o ID (usado ao criar uma nova manutenção)
     public Manutencao(LocalDate dtIni, String descricao, LocalDate dtFim, TipoEstado estado, EspacoDesportivo espacoDesportivo, Usuario usuario, Double custo) {
         this.dtIni = dtIni;
         this.descricao = descricao;
@@ -75,7 +58,6 @@ public class Manutencao {
         this.custo = custo;
     }
 
-    // Getters and Setters
     public Integer getIdManu() {
         return idManu;
     }

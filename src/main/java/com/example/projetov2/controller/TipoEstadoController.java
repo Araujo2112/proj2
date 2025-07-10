@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tipos-estados")
+@RequestMapping("/api/tipos-estados")
 public class TipoEstadoController {
 
     private final TipoEstadoService tipoEstadoService;

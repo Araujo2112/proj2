@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tipos-usuarios")
+@RequestMapping("/api/tipos-usuarios")
 public class TipoUsuarioController {
     @Autowired
     private TipoUsuarioService tipoUsuarioService;

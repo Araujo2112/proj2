@@ -14,7 +14,6 @@ public class LoginController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    // Mostrar o formulário de login
     @GetMapping("/login")
     public String showLoginPage(HttpSession session) {
         if (session.getAttribute("utilizador") != null) {
@@ -23,7 +22,6 @@ public class LoginController {
         return "login";
     }
 
-    // Processar login
     @PostMapping("/login")
     public String processLogin(@RequestParam("nome") String nome,
                                @RequestParam("password") String password,
@@ -42,7 +40,6 @@ public class LoginController {
             return "login";
         }
 
-        // Apenas permitir acesso a.html utilizadores tipo 'cliente'
         if (!user.getTipoUsuario().getTipo().equalsIgnoreCase("user")) {
             model.addAttribute("error", "Apenas clientes podem aceder pela versão web.");
             return "login";
@@ -52,7 +49,6 @@ public class LoginController {
         return "redirect:/home";
     }
 
-    // Página principal
     @GetMapping("/home")
     public String showHomePage(HttpSession session, Model model) {
         Usuario user = (Usuario) session.getAttribute("utilizador");
@@ -64,7 +60,6 @@ public class LoginController {
         return "home";
     }
 
-    // Logout
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();

@@ -16,7 +16,6 @@ public class EspacoDesportivo {
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_espaco", nullable = false)
-    @JsonIgnore
     private TipoEspacoDesportivo tipoEspaco;
 
     @Column(nullable = false)
