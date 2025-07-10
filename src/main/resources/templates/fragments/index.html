@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<div th:replace="fragments/header :: main-header"></div>
+
+<!-- IMAGEM PRINCIPAL -->
+<div class="banner-container">
+    <img src="/images/pavilhao.jpg" alt="Imagem do Pavilhão" class="banner-img">
+</div>
+
+<!-- BLOCO AZUL INFORMATIVO -->
+<section class="reserva-info">
+    <h1>RESERVE O SEU ESPAÇO</h1>
+    <p>
+        A <strong>&lt;nome&gt;</strong> oferece uma solução fácil e eficiente para reservar campos e pavilhões para a sua prática desportiva.
+        Com o nosso sistema, pode fazer reservas rápidas, pagar de forma segura e garantir a disponibilidade do espaço em poucos cliques.
+    </p>
+    <p>
+        Só tem que fazer a sua reserva, escolher o espaço e aproveitar o jogo!
+    </p>
+    <a href="/escolher-modalidade" class="btn-primary">RESERVAR</a>
+</section>
+
+<!-- FOOTER -->
+<div th:replace="fragments/footer :: main-footer"></div>
+
+</body>
+</html>

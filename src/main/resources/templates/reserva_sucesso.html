@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva Confirmada</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<!-- Header -->
+<div th:replace="fragments/header :: main-header"></div>
+
+<main class="login-box">
+    <h1 style="color: #2a702a;">✅ Reserva Confirmada</h1>
+
+    <div class="input-group" style="background-color: #f0fff0; border: 1px solid #b4dfb4; border-radius: 10px; padding: 20px;">
+        <p><strong>Espaço:</strong> <span th:text="${reserva.espacoDesportivo.tipoEspaco.tipo}"></span></p>
+        <p><strong>Data:</strong> <span th:text="${reserva.dt}"></span></p>
+        <p><strong>Hora:</strong>
+            <span th:text="${reserva.hIni} + ' - ' + ${reserva.hFim}"></span>
+        </p>
+        <p><strong>Estado:</strong> <span th:text="${reserva.estado.estado}"></span></p>
+        <p><strong>Método de Pagamento:</strong> <span th:text="${reserva.tipoPagamento.nome}"></span></p>
+        <p><strong>Total:</strong> <span th:text="${precoTotal} + ' €'"></span></p>
+    </div>
+
+    <div class="register-link" style="margin-top: 30px;">
+        <a th:href="@{/reservas/minhas}" class="btn-primary" style="margin-right: 10px;">📄 Ver Minhas Reservas</a>
+        <a th:href="@{/home}" class="btn-primary">🏠 Página Inicial</a>
+    </div>
+</main>
+
+<!-- Footer -->
+<div th:replace="fragments/footer :: main-footer"></div>
+
+</body>
+</html>

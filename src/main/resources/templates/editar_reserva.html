@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Reserva</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- Cabeçalho -->
+<div th:replace="fragments/header :: main-header"></div>
+
+<main class="login-box">
+    <h1>Editar Reserva</h1>
+
+    <!-- Mensagens de sucesso/erro -->
+    <div th:if="${sucesso}" class="mensagem-sucesso" th:text="${sucesso}"></div>
+    <div th:if="${erro}" class="mensagem-erro" th:text="${erro}"></div>
+
+    <form th:action="@{/reservas/editar}" method="post" class="login-form">
+        <input type="hidden" name="id" th:value="${reserva.id}" />
+
+        <div class="input-group">
+            <label for="data">Data</label>
+            <input type="date" id="data" name="dt" th:value="${reserva.dt}" required>
+        </div>
+
+        <div class="input-group">
+            <label for="hIni">Hora de Início</label>
+            <input type="time" id="hIni" name="hIni" th:value="${reserva.hIni}" required>
+        </div>
+
+        <div class="input-group">
+            <label for="hFim">Hora de Fim</label>
+            <input type="time" id="hFim" name="hFim" th:value="${reserva.hFim}" required>
+        </div>
+
+        <div class="input-group">
+            <label for="espaco">Espaço Desportivo</label>
+            <select id="espaco" name="espacoDesportivo.id" required>
+                <option value="">-- Selecionar --</option>
+                <option th:each="espaco : ${espacos}"
+                        th:value="${espaco.id}"
+                        th:selected="${espaco.id == reserva.espacoDesportivo.id}"
+                        th:text="${espaco.tipoEspaco.tipo}"></option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn-primary">Guardar Alterações</button>
+    </form>
+</main>
+
+<!-- Rodapé -->
+<div th:replace="fragments/footer :: main-footer"></div>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Espaços Desportivos</title>
+</head>
+<body>
+
+<div th:replace="fragments/header :: main-header"></div>
+
+<h2>Espaços Desportivos Disponíveis</h2>
+
+<form th:action="@{/reservas/espacos}" method="get">
+    <label>Filtrar por tipo:
+        <input type="text" name="modalidade" placeholder="Ex: futebol, ténis..."/>
+    </label>
+    <button type="submit">Ver Espaços</button>
+</form>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Tipo</th>
+        <th>Capacidade</th>
+        <th>Lote</th>
+        <th>Preço/Hora</th>
+        <th>Reservar</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="espaco : ${espacos}" th:if="${espaco.tipoEspaco != null}">
+        <td th:text="${espaco.tipoEspaco.tipo}">Tipo</td>
+        <td th:text="${espaco.capacidade}">Capacidade</td>
+        <td th:text="${espaco.lote}">Lote</td>
+        <td th:text="${espaco.precoHora} + ' €'">Preço</td>
+        <td>
+            <a th:if="${espaco.idEspaco != null}"
+               th:href="@{'/reservas/novo/' + ${espaco.idEspaco}}">Reservar</a>
+            <span th:if="${espaco.idEspaco == null}">Indisponível</span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<p><a th:href="@{/home}">Voltar</a></p>
+</body>
+</html>

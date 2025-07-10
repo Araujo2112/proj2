@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modalidades</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div th:replace="fragments/header :: main-header"></div>
+
+<main class="modalidades-container">
+    <h1 class="modalidades-titulo">Escolha a Modalidade</h1>
+
+    <div class="modalidades-grid">
+        <div class="modalidade-card" th:each="m : ${modalidades}">
+            <img class="modalidade-img" th:src="@{'/' + m.imagem}" th:alt="${m.tipo}">
+            <div class="modalidade-overlay">
+                <span>Saber mais</span>
+                <span class="seta">➔</span>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="fragments/footer :: main-footer"></div>
+
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagamento</title>
+    <style>
+        .hidden { display: none; }
+        .pagamento-section { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<div th:replace="fragments/header :: main-header"></div>
+
+<h2>Confirmação de Pagamento</h2>
+
+<p><strong>Total a pagar:</strong> <span th:text="${precoFinal} + ' €'"></span></p>
+
+<label for="metodo">Escolha o método de pagamento:</label>
+<select id="metodo" onchange="mostrarFormulario()">
+    <option value="">-- Selecionar --</option>
+    <option value="cartao">Cartão de Crédito</option>
+    <option value="mbway">MBWay</option>
+    <option value="transferencia">Transferência Bancária</option>
+</select>
+
+<div id="cartaoForm" class="pagamento-section hidden">
+    <label>Número do Cartão:
+        <input type="text" placeholder="**** **** **** 1234">
+    </label><br>
+    <label>Validade:
+        <input type="text" placeholder="MM/AA">
+    </label><br>
+    <label>CVV:
+        <input type="text" placeholder="123">
+    </label><br>
+    <button onclick="confirmarPagamento('cartao')">Confirmar Pagamento</button>
+</div>
+
+<div id="mbwayForm" class="pagamento-section hidden">
+    <label>Número de Telemóvel (MBWay):
+        <input type="text" id="mbwayNumero" placeholder="912345678">
+    </label><br>
+    <button onclick="simularMbway()">Confirmar com MBWay</button>
+</div>
+
+<div id="transferenciaForm" class="pagamento-section hidden">
+    <p><strong>IBAN para transferência:</strong> PT50 0002 0123 1234 5678 9015 4</p>
+    <label>Nome do Titular:
+        <input type="text" id="nomeTitular" placeholder="Nome completo">
+    </label><br>
+    <label>Nº Referência da Transferência:
+        <input type="text" id="referencia" placeholder="Ex: TRF123456">
+    </label><br>
+    <button onclick="simularTransferencia()">Confirmar Transferência</button>
+</div>
+
+<p id="mensagem" style="font-weight: bold;"></p>
+
+<p><a th:href="@{/home}">Cancelar e Voltar à Home</a></p>
+
+<script>
+    function mostrarFormulario() {
+        const metodo = document.getElementById("metodo").value;
+        document.getElementById("cartaoForm").classList.add("hidden");
+        document.getElementById("mbwayForm").classList.add("hidden");
+        document.getElementById("transferenciaForm").classList.add("hidden");
+
+        if (metodo === "cartao") {
+            document.getElementById("cartaoForm").classList.remove("hidden");
+        } else if (metodo === "mbway") {
+            document.getElementById("mbwayForm").classList.remove("hidden");
+        } else if (metodo === "transferencia") {
+            document.getElementById("transferenciaForm").classList.remove("hidden");
+        }
+    }
+
+    function confirmarPagamento(tipo) {
+        document.getElementById("mensagem").innerText = "Pagamento com " + tipo + " confirmado!";
+    }
+
+    function simularMbway() {
+        const numero = document.getElementById("mbwayNumero").value;
+        const mensagem = document.getElementById("mensagem");
+        if (!numero) {
+            mensagem.style.color = "red";
+            mensagem.innerText = "Insira o seu número MBWay.";
+            return;
+        }
+
+        mensagem.style.color = "black";
+        mensagem.innerText = "Aguardando confirmação da aplicação MBWay...";
+
+        setTimeout(() => {
+            mensagem.style.color = "green";
+            mensagem.innerText = "Pagamento MBWay confirmado com sucesso!";
+        }, 3000);
+    }
+
+    function simularTransferencia() {
+        const nome = document.getElementById("nomeTitular").value;
+        const ref = document.getElementById("referencia").value;
+        const mensagem = document.getElementById("mensagem");
+
+        if (!nome || !ref) {
+            mensagem.style.color = "red";
+            mensagem.innerText = "Por favor, preencha todos os dados da transferência.";
+            return;
+        }
+
+        mensagem.style.color = "black";
+        mensagem.innerText = "A validar a transferência bancária...";
+
+        setTimeout(() => {
+            mensagem.style.color = "green";
+            mensagem.innerText = "Transferência confirmada com sucesso!";
+        }, 3000);
+    }
+</script>
+</body>
+</html>

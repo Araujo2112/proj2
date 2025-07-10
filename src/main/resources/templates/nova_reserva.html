@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Reserva</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- Cabeçalho -->
+<div th:replace="fragments/header :: main-header"></div>
+
+<main class="login-box">
+    <h1>Nova Reserva</h1>
+
+    <!-- Mensagens -->
+    <div th:if="${erro}" class="mensagem-erro" th:text="${erro}"></div>
+    <div th:if="${sucesso}" class="mensagem-sucesso" th:text="${sucesso}"></div>
+
+    <!-- Formulário de nova reserva -->
+    <form method="post" th:action="@{/reservas/nova}" class="login-form">
+        <div class="input-group">
+            <label for="data">Data</label>
+            <input type="date" id="data" name="data" required>
+        </div>
+
+        <div class="input-group">
+            <label for="horaInicio">Hora de Início</label>
+            <input type="time" id="horaInicio" name="horaInicio" required>
+        </div>
+
+        <div class="input-group">
+            <label for="horaFim">Hora de Fim</label>
+            <input type="time" id="horaFim" name="horaFim" required>
+        </div>
+
+        <div class="input-group">
+            <label for="espaco">Espaço Desportivo</label>
+            <select id="espaco" name="espacoId" required>
+                <option value="">-- Selecionar --</option>
+                <option th:each="espaco : ${espacos}"
+                        th:value="${espaco.id}"
+                        th:text="${espaco.nome}"></option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="tipoPagamento">Método de Pagamento</label>
+            <select id="tipoPagamento" name="tipoPagamentoId" required>
+                <option value="">-- Selecionar --</option>
+                <option th:each="metodo : ${metodosPagamento}"
+                        th:value="${metodo.id}"
+                        th:text="${metodo.nome}"></option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn-primary">Confirmar Reserva</button>
+    </form>
+</main>
+
+<!-- Rodapé -->
+<div th:replace="fragments/footer :: main-footer"></div>
+
+</body>
+</html>

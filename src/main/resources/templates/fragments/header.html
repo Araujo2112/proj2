@@ -1,0 +1,59 @@
+<header th:fragment="main-header" class="main-header">
+    <div class="header-container">
+        <a th:href="@{/}" class="logo-link">
+            <img src="/images/logo.png" alt="Logotipo" class="logo">
+        </a>
+
+        <nav class="nav-links">
+            <a th:href="@{/modalidades}" class="nav-item">Modalidades</a>
+            <a th:href="@{/minhas_reservas}" class="nav-item">Reservas</a>
+            <a th:href="@{/perfil}" class="nav-item">Perfil</a>
+            <a th:href="@{/logout}" class="nav-item logout">Logout</a>
+        </nav>
+    </div>
+</header>
+
+<style>
+    .main-header {
+        background-color: white;
+        border-bottom: 1px solid #ddd;
+        padding: 10px 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+    }
+
+    .header-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo-link img.logo {
+        height: 50px;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 20px;
+    }
+
+    .nav-item {
+        font-weight: 600;
+        color: #333;
+        text-decoration: none;
+        padding: 8px 12px;
+        border-radius: 6px;
+        transition: background-color 0.2s;
+    }
+
+    .nav-item:hover {
+        background-color: #f0f0f0;
+    }
+
+    .logout {
+        color: #cc0000;
+        font-weight: 700;
+    }
+</style>

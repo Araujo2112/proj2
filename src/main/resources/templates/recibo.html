@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recibo de Reserva</title>
+</head>
+<body>
+
+<div th:replace="fragments/header :: main-header"></div>
+
+<h2>Recibo de Reserva</h2>
+
+<p><strong>Cliente:</strong> <span th:text="${reserva.usuario.nome}"></span></p>
+<p><strong>Email:</strong> <span th:text="${reserva.usuario.email}"></span></p>
+<p><strong>Espaço:</strong> <span th:text="${reserva.espacoDesportivo.tipoEspaco.tipo}"></span></p>
+<p><strong>Data:</strong> <span th:text="${reserva.dt}"></span></p>
+<p><strong>Hora:</strong> <span th:text="${reserva.hIni} + ' - ' + ${reserva.hFim}"></span></p>
+<p><strong>Pagamento:</strong> <span th:text="${reserva.tipoPagamento.nome}"></span></p>
+<p><strong>Total Pago:</strong> <span th:text="${precoTotal} + ' €'"></span></p>
+
+<br/>
+<p><a th:href="@{/home}">Voltar à Página Inicial</a></p>
+</body>
+</html>

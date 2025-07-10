@@ -22,6 +22,12 @@ public class Reserva {
     @Column(nullable = false)
     private LocalTime hFim;
 
+    @Column(nullable = false)
+    private boolean lembrete12hEnviado = false;
+
+    @Column(nullable = false)
+    private boolean lembrete24hEnviado = false;
+
     @ManyToOne
     @JoinColumn(name = "idEstado", nullable = false)
     private TipoEstado estado;
@@ -34,10 +40,15 @@ public class Reserva {
     @JoinColumn(name = "idUsuario", nullable = false)
     private Usuario usuario;
 
+    @ManyToOne
+    @JoinColumn(name = "id_tipo_pag", nullable = false)
+    private TipoPagamento tipoPagamento;
+
     public Reserva() {
     }
 
-    public Reserva(Integer idReserva, LocalDate dt, LocalTime hIni, LocalTime hFim, TipoEstado estado, EspacoDesportivo espacoDesportivo, Usuario usuario) {
+    public Reserva(Integer idReserva, LocalDate dt, LocalTime hIni, LocalTime hFim, TipoEstado estado,
+                   EspacoDesportivo espacoDesportivo, Usuario usuario, TipoPagamento tipoPagamento) {
         this.idReserva = idReserva;
         this.dt = dt;
         this.hIni = hIni;
@@ -45,15 +56,7 @@ public class Reserva {
         this.estado = estado;
         this.espacoDesportivo = espacoDesportivo;
         this.usuario = usuario;
-    }
-
-    public Reserva(LocalDate dt, LocalTime hIni, LocalTime hFim, TipoEstado estado, EspacoDesportivo espacoDesportivo, Usuario usuario) {
-        this.dt = dt;
-        this.hIni = hIni;
-        this.hFim = hFim;
-        this.estado = estado;
-        this.espacoDesportivo = espacoDesportivo;
-        this.usuario = usuario;
+        this.tipoPagamento = tipoPagamento;
     }
 
     public Usuario getUsuario() {
@@ -110,5 +113,29 @@ public class Reserva {
 
     public void setIdReserva(Integer idReserva) {
         this.idReserva = idReserva;
+    }
+
+    public TipoPagamento getTipoPagamento() {
+        return tipoPagamento;
+    }
+
+    public void setTipoPagamento(TipoPagamento tipoPagamento) {
+        this.tipoPagamento = tipoPagamento;
+    }
+
+    public boolean isLembrete12hEnviado() {
+        return lembrete12hEnviado;
+    }
+
+    public void setLembrete12hEnviado(boolean lembrete12hEnviado) {
+        this.lembrete12hEnviado = lembrete12hEnviado;
+    }
+
+    public boolean isLembrete24hEnviado() {
+        return lembrete24hEnviado;
+    }
+
+    public void setLembrete24hEnviado(boolean lembrete24hEnviado) {
+        this.lembrete24hEnviado = lembrete24hEnviado;
     }
 }

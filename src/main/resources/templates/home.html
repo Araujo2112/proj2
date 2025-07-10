@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Página Inicial</title>
+    <style>
+        #lembretePopup {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #fdf6d1;
+            border: 1px solid #ccc;
+            padding: 15px 20px;
+            box-shadow: 0 0 10px #aaa;
+            border-radius: 8px;
+            display: none;
+            z-index: 9999;
+        }
+
+        #lembretePopup h4 {
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        #lembretePopup button {
+            margin-top: 10px;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="fragments/header :: main-header"></div>
+
+<h1>Bem-vindo, <span th:text="${session.utilizador.nome}">Utilizador</span>!</h1>
+<p>Escolha uma opção:</p>
+<ul>
+    <li><a th:href="@{/reservas/nova}">Ver Espaços Desportivos</a></li>
+    <li><a th:href="@{/reservas/minhas}">Consultar Minhas Reservas</a></li>
+    <li><a th:href="@{/perfil}">Editar Perfil</a></li>
+    <li><a th:href="@{/reservas/nova}">Nova Reserva</a></li>
+</ul>
+<p><a th:href="@{/logout}">Terminar Sessão</a></p>
+
+<!-- POP-UP DE LEMBRETE -->
+<div id="lembretePopup">
+    <h4>🔔 Lembrete de Reserva</h4>
+    <div id="mensagemLembrete">Tem uma reserva em breve!</div>
+    <button onclick="fecharLembrete()">Fechar</button>
+</div>
+
+<script>
+    const lembretesExibidos = new Set();
+
+    function mostrarLembrete(mensagem) {
+        const popup = document.getElementById("lembretePopup");
+        document.getElementById("mensagemLembrete").innerText = mensagem;
+        popup.style.display = "block";
+    }
+
+    function fecharLembrete() {
+        document.getElementById("lembretePopup").style.display = "none";
+    }
+
+    async function verificarLembretes() {
+        try {
+            const res = await fetch("/reservas/api/lembretes");
+            if (!res.ok) return;
+
+            const reservas = await res.json();
+            console.log("🔔 Lembretes recebidos:", reservas);
+
+            reservas.forEach(r => {
+                if (!lembretesExibidos.has(r.idReserva)) {
+                    const tipo = r.espacoDesportivo.tipoEspaco?.tipo || "Espaço";
+                    const hora = r.hIni.substring(0, 5);
+                    const msg = `Tem uma reserva às ${hora}.`;
+                    mostrarLembrete(msg);
+                    lembretesExibidos.add(r.idReserva);
+                }
+            });
+        } catch (e) {
+            console.error("Erro ao buscar lembretes:", e);
+        }
+    }
+
+    window.onload = verificarLembretes;
+    setInterval(verificarLembretes, 60000);
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Espaços Disponíveis</title>
+</head>
+<body>
+
+<div th:replace="fragments/header :: main-header"></div>
+
+<h2>Espaços Disponíveis</h2>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Capacidade</th>
+        <th>Lote</th>
+        <th>Preço/Hora</th>
+        <th>Reservar</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="espaco : ${espacos}">
+        <td th:text="${espaco.capacidade}"></td>
+        <td th:text="${espaco.lote}"></td>
+        <td th:text="${espaco.precoHora + ' €'}"></td>
+        <td>
+            <a th:href="@{'/reservas/novo/' + ${espaco.idEspaco}}">Efetuar Reserva</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<p><a th:href="@{/reservas/nova}">Voltar à escolha da modalidade</a></p>
+</body>
+</html>

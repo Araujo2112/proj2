@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/notificacoes")
 public class NotificacaoController {
+
     @Autowired
     private NotificacaoService notificacaoService;
 
@@ -31,6 +32,7 @@ public class NotificacaoController {
 
     @PostMapping
     public ResponseEntity<Notificacao> criar(@RequestBody Notificacao notificacao) {
+        // Definindo a data e hora da notificação automaticamente
         notificacao.setDataNotificacao(LocalDate.now());
         notificacao.setHoraNotificacao(LocalTime.now());
 
@@ -44,19 +46,3 @@ public class NotificacaoController {
             Notificacao notificacao = notificacaoService.atualizar(id, notificacaoAtualizada);
             return ResponseEntity.ok(notificacao);
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Integer id) {
-        try {
-            notificacaoService.deletar(id);
-            return ResponseEntity.noContent().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-}
-
-

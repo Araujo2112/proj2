@@ -16,6 +16,9 @@ public class TipoEspacoDesportivo {
     @Column(nullable = false, length = 50, unique = true)
     private String tipo;
 
+    @Column(length = 100)
+    private String imagem;
+
     public TipoEspacoDesportivo() {}
 
     public TipoEspacoDesportivo(Integer idTipoEspaco, String tipo) {
@@ -37,6 +40,14 @@ public class TipoEspacoDesportivo {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
     }
 }
 

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script>
+        function ativarEdicao() {
+            const campos = document.querySelectorAll('.editavel');
+            campos.forEach(campo => campo.removeAttribute('readonly'));
+            document.getElementById('btn-editar').style.display = 'none';
+            document.getElementById('btn-guardar').style.display = 'inline-block';
+        }
+    </script>
+</head>
+<body>
+
+<!-- Header -->
+<div th:replace="fragments/header :: main-header"></div>
+
+<main class="login-box">
+    <h1>Perfil do Utilizador</h1>
+
+    <!-- Mensagens -->
+    <div th:if="${sucesso}" class="mensagem-sucesso" th:text="${sucesso}"></div>
+    <div th:if="${erro}" class="mensagem-erro" th:text="${erro}"></div>
+
+    <form method="post" th:action="@{/perfil}" class="login-form">
+        <div class="input-group">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" th:value="${utilizador.nome}" class="editavel" readonly required>
+        </div>
+
+        <div class="input-group">
+            <label for="tel">Telefone</label>
+            <input type="text" id="tel" name="tel" th:value="${utilizador.tel}" class="editavel" readonly required>
+        </div>
+
+        <div class="input-group">
+            <label for="nif">NIF</label>
+            <input type="text" id="nif" name="nif" th:value="${utilizador.nif}" readonly>
+        </div>
+
+        <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" th:value="${utilizador.email}" class="editavel" readonly required>
+        </div>
+
+        <div class="input-group">
+            <label for="password">Nova Palavra-passe</label>
+            <input type="password" id="password" name="password" class="editavel" readonly>
+        </div>
+
+        <div class="input-group">
+            <label for="confirmPassword">Confirmar Palavra-passe</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" class="editavel" readonly>
+        </div>
+
+        <button type="button" id="btn-editar" class="btn-primary" onclick="ativarEdicao()">Editar Perfil</button>
+        <button type="submit" id="btn-guardar" class="btn-primary" style="display: none;">Guardar Alterações</button>
+    </form>
+</main>
+
+<!-- Footer -->
+<div th:replace="fragments/footer :: main-footer"></div>
+
+</body>
+</html>

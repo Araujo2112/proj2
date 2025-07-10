@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt">
+<head>
+    <meta charset="UTF-8" />
+    <title>Reserva de Espaço Desportivo</title>
+    <script>
+        function calcularPreco() {
+            const hi = document.getElementById("horaInicio").value;
+            const hf = document.getElementById("horaFim").value;
+            const precoHora = parseFloat(document.getElementById("precoHora").value);
+            const lbl = document.getElementById("precoFinal");
+
+            if (hi && hf) {
+                const [h1,m1] = hi.split(":").map(Number);
+                const [h2,m2] = hf.split(":").map(Number);
+                const dur = (h2 + m2/60) - (h1 + m1/60);
+
+                if (dur > 0) lbl.innerText = "Custo previsto: " + (dur*precoHora).toFixed(2) + " €";
+                else lbl.innerText = "Horário inválido.";
+            } else lbl.innerText = "";
+        }
+    </script>
+</head>
+<body>
+
+<div th:replace="fragments/header :: main-header"></div>
+
+<h2>Reserva de Espaço Desportivo</h2>
+
+<p th:if="${erro}" th:text="${erro}" style="color:red;"></p>
+
+<form th:action="@{'/reservas/confirmar/' + ${espaco.idEspaco}}" method="post">
+    <p><strong>Modalidade:</strong> <span th:text="${espaco.tipoEspaco.tipo}"></span></p>
+    <p><strong>Preço/hora:</strong> <span th:text="${espaco.precoHora} + ' €'"></span></p>
+    <input type="hidden" id="precoHora" th:value="${espaco.precoHora}" />
+
+    <label>Data:
+        <input type="date" name="data" required />
+    </label><br/>
+
+    <label>Hora Início:
+        <input type="time" id="horaInicio" name="horaInicio" required oninput="calcularPreco()" />
+    </label><br/>
+
+    <label>Hora Fim:
+        <input type="time" id="horaFim" name="horaFim" required oninput="calcularPreco()" />
+    </label><br/>
+
+    <p id="precoFinal" style="font-weight:bold;"></p>
+
+    <button type="submit">Continuar para Pagamento</button>
+</form>
+
+<p><a th:href="@{/reservas/nova}">Voltar</a></p>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Reservas</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- Cabeçalho -->
+<div th:replace="fragments/header :: main-header"></div>
+
+<main class="login-box">
+    <h1>Minhas Reservas</h1>
+
+    <!-- Tabela de reservas -->
+    <table>
+        <thead>
+        <tr>
+            <th>Espaço</th>
+            <th>Data</th>
+            <th>Hora</th>
+            <th>Estado</th>
+            <th>Pagamento</th>
+            <th>Total</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="reserva : ${reservas}">
+            <td th:text="${reserva.espacoDesportivo.tipoEspaco.tipo}">Tipo</td>
+            <td th:text="${reserva.dt}">Data</td>
+            <td th:text="${reserva.hIni} + ' - ' + ${reserva.hFim}">Hora</td>
+            <td th:text="${reserva.estado.estado}">Estado</td>
+            <td th:text="${reserva.tipoPagamento.nome}">Pagamento</td>
+            <td th:text="${reserva.precoTotal} + ' €'">Total</td>
+            <td>
+                <form th:action="@{/reservas/cancelar}" method="post" th:if="${reserva.estado.estado != 'Cancelada'}">
+                    <input type="hidden" name="id" th:value="${reserva.id}" />
+                    <button type="submit" class="cancelar">Cancelar</button>
+                </form>
+                <a th:href="@{/reservas/editar/{id}(id=${reserva.id})}" class="editar">Editar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<!-- Rodapé -->
+<div th:replace="fragments/footer :: main-footer"></div>
+
+</body>
+</html>

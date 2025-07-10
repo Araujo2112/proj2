@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalTime;
-import java.util.List;
 
 @Entity
 @Table(name = "espaco_desportivo")
@@ -17,6 +16,7 @@ public class EspacoDesportivo {
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_espaco", nullable = false)
+    @JsonIgnore
     private TipoEspacoDesportivo tipoEspaco;
 
     @Column(nullable = false)
@@ -114,5 +114,3 @@ public class EspacoDesportivo {
         this.horaFecho = horaFecho;
     }
 }
-
-

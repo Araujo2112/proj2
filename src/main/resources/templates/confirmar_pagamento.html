@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar Pagamento</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div th:replace="fragments/header :: main-header"></div>
+
+<main class="content-box">
+    <h1 class="title">Confirmar Pagamento</h1>
+
+    <form method="post" th:action="@{/confirmar-pagamento}" class="main-form">
+        <div class="input-group">
+            <label for="reservaId">ID da Reserva</label>
+            <input type="text" id="reservaId" name="reservaId" th:value="${reserva.id}" readonly>
+        </div>
+
+        <div class="input-group">
+            <label for="metodoPagamento">Método de Pagamento</label>
+            <select id="metodoPagamento" name="metodoPagamento" required>
+                <option value="">-- Selecionar --</option>
+                <option th:each="metodo : ${metodosPagamento}"
+                        th:value="${metodo.id}"
+                        th:text="${metodo.nome}"></option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>Total a Pagar</label>
+            <p th:text="${total} + ' €'"></p>
+        </div>
+
+        <button type="submit" class="btn-primary">Confirmar Pagamento</button>
+    </form>
+</main>
+
+<div th:replace="fragments/footer :: main-footer"></div>
+
+</body>
+</html>
