@@ -352,7 +352,9 @@ INSERT INTO public.tipo_usuario (id_tipo_usuario, tipo)
 VALUES
     (1, 'admin'),
     (2, 'técnico de manutenção'),
-    (3, 'user');
+    (3, 'user'),
+    (4, 'gestor'),
+    (5, 'rececionista');
 
 -- Código postal
 INSERT INTO public.cod_postal (id_cod_postal, localidade)
@@ -364,7 +366,9 @@ INSERT INTO public.usuario (nome, tel, nif, cod_postal, id_tipo_usuario, rua, n_
 VALUES
     ('Joao Antonio', '+351933456789', 123456789, '1', 1, 'Rua Pereiras', 10),
     ('Carlos Ferreira', '+351911223344', 555444333, '1', 2, 'Rua das Oficinas', 5),
-    ('Maria Silva', '+351912345678', 987654321, '1', 3, 'Avenida Central', 20);
+    ('Maria Silva', '+351912345678', 987654321, '1', 3, 'Avenida Central', 20),
+    ('Rodrigo Anjos', '+351912340078', 987333321, '1', 4, 'Rua Tome de SOusa', 10),
+    ('Ricardo Santos', '+351912345611', 987654000, '1', 5, 'Rua do Conquitador', 20);
 
 -- Tipos de espaço desportivo
 INSERT INTO public.tipo_espaco_desportivo (id_tipo_espaco, tipo)
