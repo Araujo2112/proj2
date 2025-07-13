@@ -40,6 +40,7 @@ public class ReservaService {
 
     public Reserva atualizar(Integer id, Reserva reservaAtualizada) {
         return reservaRepository.findById(id).map(reserva -> {
+            reserva.setDt(reservaAtualizada.getDt());
             reserva.sethIni(reservaAtualizada.gethIni());
             reserva.sethFim(reservaAtualizada.gethFim());
             reserva.setEstado(reservaAtualizada.getEstado());

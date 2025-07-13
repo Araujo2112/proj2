@@ -17,7 +17,7 @@ public class ReservaReminderScheduler {
     @Autowired
     private ReservaRepository reservaRepository;
 
-    @Scheduled(fixedRate = 60000) // verifica a.html cada 60 segundos
+    @Scheduled(fixedRate = 60000)
     @Transactional
     public void verificarReservasParaLembrete() {
         LocalDateTime agora = LocalDateTime.now();

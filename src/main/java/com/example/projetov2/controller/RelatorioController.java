@@ -26,6 +26,12 @@ public class RelatorioController {
         return ResponseEntity.ok(relatorioService.listarTodos());
     }
 
+    @GetMapping("/tipo/{tipoId}")
+    public ResponseEntity<List<Relatorio>> getRelatoriosPorTipo(@PathVariable int tipoId) {
+        List<Relatorio> relatorios = relatorioService.findByTipoId(tipoId);
+        return ResponseEntity.ok(relatorios);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Relatorio> buscarPorId(@PathVariable Integer id) {
         Optional<Relatorio> relatorio = relatorioService.buscarPorId(id);
@@ -43,6 +49,14 @@ public class RelatorioController {
             @RequestParam("de") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate de,
             @RequestParam("ate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ate) {
         relatorioService.gerarRelatorioFaturacao(de, ate);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/utilizacao")
+    public ResponseEntity<Void> gerarRelatorioUtilizacao(
+            @RequestParam("de") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate de,
+            @RequestParam("ate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ate) {
+        relatorioService.gerarRelatorioUtilizacao(de, ate);
         return ResponseEntity.ok().build();
     }
 

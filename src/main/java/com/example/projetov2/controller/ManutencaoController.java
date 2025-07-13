@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -30,6 +31,20 @@ public class ManutencaoController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/data/{dataInicio}/{dataFim}")
+    public ResponseEntity<List<Manutencao>> buscarManutencaoEntreDatas(
+            @PathVariable String dataInicio, @PathVariable String dataFim) {
+        try {
+            LocalDate inicio = LocalDate.parse(dataInicio);
+            LocalDate fim = LocalDate.parse(dataFim);
+            List<Manutencao> manutencoes = manutencaoService.buscarManutencaoEntreDatas(inicio, fim);
+            return ResponseEntity.ok(manutencoes);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
 
     @PostMapping
     public ResponseEntity<Manutencao> criar(@RequestBody Manutencao manutencao) {

@@ -1,12 +1,9 @@
 package com.example.projetov2.service;
 
 import com.example.projetov2.dto.FaturacaoDTO;
-import com.example.projetov2.model.Pagamento;
-import com.example.projetov2.model.Relatorio;
-import com.example.projetov2.model.TipoRelatorio;
-import com.example.projetov2.repository.PagamentoRepository;
-import com.example.projetov2.repository.RelatorioRepository;
-import com.example.projetov2.repository.TipoRelatorioRepository;
+import com.example.projetov2.dto.RelatorioEspacoDTO;
+import com.example.projetov2.model.*;
+import com.example.projetov2.repository.*;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +13,7 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,10 +31,23 @@ public class RelatorioService {
     private RelatorioRepository relatorioRepository;
 
     @Autowired
+    private ReservaRepository reservaRepository;
+
+    @Autowired
+    private EspacoDesportivoRepository espacoRepository;
+
+    @Autowired
+    private ManutencaoService manutencaoService;
+
+    @Autowired
     private TipoRelatorioRepository tipoRelatorioRepository;
 
     public List<Relatorio> listarTodos() {
         return relatorioRepository.findAll();
+    }
+
+    public List<Relatorio> findByTipoId(int tipoId) {
+        return relatorioRepository.findByIdTipo_Id(tipoId);
     }
 
     public Optional<Relatorio> buscarPorId(Integer id) {
@@ -137,6 +148,114 @@ public class RelatorioService {
             relatorio.setDataInicio(de);
             relatorio.setDataFim(ate);
             relatorio.setDescricao("Faturação de " + de + " a " + ate);
+            relatorio.setIdTipo(tipo);
+            relatorio.setCaminhoPdf(ficheiro.getAbsolutePath());
+            relatorio.setDataGeracao(LocalDate.now());
+
+            relatorioRepository.save(relatorio);
+
+            return ficheiro;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public File gerarRelatorioUtilizacao(LocalDate de, LocalDate ate) {
+        try {
+            List<Reserva> reservas = reservaRepository.findByDtBetweenAndEstado_IdEstado(de, ate, 1);
+            List<RelatorioEspacoDTO> relatoriosEspacos = new ArrayList<>();
+
+            for (EspacoDesportivo espaco : espacoRepository.findAll()) {
+                int quantidadeReservas = 0;
+                double horasUtilizadas = 0;
+                double precoTotal = 0;
+                double custoManutencao = 0;
+                double horasTotaisPossiveis = Duration.between(espaco.getHoraAbertura(), espaco.getHoraFecho()).toHours();
+                long diasTotais = Duration.between(de.atStartOfDay(), ate.plusDays(1).atStartOfDay()).toDays();
+                long horasPorDia = Duration.between(espaco.getHoraAbertura(), espaco.getHoraFecho()).toHours();
+                horasTotaisPossiveis += horasPorDia * diasTotais;
+
+                for (Reserva reserva : reservas) {
+                    if (reserva.getEspacoDesportivo().equals(espaco)) {
+                        quantidadeReservas++;
+
+                        long horas = Duration.between(reserva.gethIni(), reserva.gethFim()).toHours();
+                        horasUtilizadas += horas;
+                        precoTotal += espaco.getPrecoHora().doubleValue() * horas;
+                    }
+                }
+
+                custoManutencao = manutencaoService.calcularCustoManutencao(espaco, de, ate);
+
+                double percentualUtilizacao = (horasUtilizadas / horasTotaisPossiveis) * 100;
+
+
+                double lucro = precoTotal - custoManutencao;
+
+                relatoriosEspacos.add(new RelatorioEspacoDTO(
+                        espaco.getLote(),
+                        quantidadeReservas,
+                        horasUtilizadas,
+                        precoTotal,
+                        custoManutencao,
+                        percentualUtilizacao,
+                        lucro
+                ));
+            }
+
+            File pasta = new File(PASTA_RELATORIOS);
+            if (!pasta.exists()) pasta.mkdirs();
+
+            String nomeFicheiro = "relatorio_utilizacao_" + de + "_a_" + ate + ".pdf";
+            File ficheiro = new File(pasta, nomeFicheiro);
+
+            Document document = new Document();
+            PdfWriter.getInstance(document, new FileOutputStream(ficheiro));
+            document.open();
+
+            Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16);
+            Font fontHeader = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+            Font fontBody = FontFactory.getFont(FontFactory.HELVETICA, 10);
+
+            document.add(new Paragraph("Relatório de Utilização de Espaços Desportivos", fontTitle));
+            document.add(new Paragraph("Período: " + de + " até " + ate, fontBody));
+            document.add(new Paragraph(" "));
+
+            PdfPTable table = new PdfPTable(7);
+            table.setWidthPercentage(100);
+            table.setWidths(new int[]{2, 2, 2, 2, 2, 2, 2});
+
+            Stream.of("Espaço", "Reservas", "Horas Utilizadas", "Preço Total", "Custo Manu", "Percentual Utilização", "Lucro")
+                    .forEach(header -> {
+                        PdfPCell headerCell = new PdfPCell(new Phrase(header, fontHeader));
+                        headerCell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                        headerCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                        table.addCell(headerCell);
+                    });
+
+            for (RelatorioEspacoDTO dto : relatoriosEspacos) {
+                table.addCell(new PdfPCell(new Phrase(dto.getLote(), fontBody)));
+                table.addCell(new PdfPCell(new Phrase(String.valueOf(dto.getQuantidadeReservas()), fontBody)));
+                table.addCell(new PdfPCell(new Phrase(String.valueOf(dto.getHorasUtilizadas()), fontBody)));
+                table.addCell(new PdfPCell(new Phrase(String.valueOf(dto.getPrecoTotal()), fontBody)));
+                table.addCell(new PdfPCell(new Phrase(String.valueOf(dto.getCustoManutencao()), fontBody)));
+                table.addCell(new PdfPCell(new Phrase(String.format("%.2f", dto.getPercentualUtilizacao()) + "%", fontBody)));
+                table.addCell(new PdfPCell(new Phrase(String.valueOf(dto.getLucro()), fontBody)));
+            }
+
+            document.add(table);
+            document.close();
+
+            TipoRelatorio tipo = tipoRelatorioRepository.findById(2)
+                    .orElseThrow(() -> new RuntimeException("Tipo de relatório não encontrado"));
+
+            Relatorio relatorio = new Relatorio();
+            relatorio.setDataCriacao(LocalDate.now());
+            relatorio.setDataInicio(de);
+            relatorio.setDataFim(ate);
+            relatorio.setDescricao("Utilização dos Espaços de " + de + " a " + ate);
             relatorio.setIdTipo(tipo);
             relatorio.setCaminhoPdf(ficheiro.getAbsolutePath());
             relatorio.setDataGeracao(LocalDate.now());

@@ -1,5 +1,6 @@
 package com.example.projetov2.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ public class Reserva {
     private Integer idReserva;
 
     @Column(nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dt;
 
     @Column(nullable = false)

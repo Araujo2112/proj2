@@ -64,5 +64,9 @@ public class PagamentoService {
 
         pagamentoRepository.save(pagamento);
     }
+
+    public Optional<Pagamento> buscarPagamentoPorReserva(Integer idReserva) {
+        return pagamentoRepository.findByReserva_IdReserva(idReserva);
+    }
 }
 

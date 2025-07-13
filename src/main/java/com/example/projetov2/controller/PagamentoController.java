@@ -28,6 +28,16 @@ public class PagamentoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/reserva/{idReserva}")
+    public ResponseEntity<Pagamento> buscarPagamentoPorReserva(@PathVariable Integer idReserva) {
+        Pagamento pagamento = pagamentoService.buscarPagamentoPorReserva(idReserva).orElse(null);
+        if (pagamento != null) {
+            return ResponseEntity.ok(pagamento);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PostMapping
     public ResponseEntity<Pagamento> criar(@RequestBody Pagamento pagamento) {
         Pagamento novoPagamento = pagamentoService.criar(pagamento);
