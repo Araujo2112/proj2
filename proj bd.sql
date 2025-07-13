@@ -362,13 +362,13 @@ VALUES
     (1, '4750-052');
 
 -- Usuários
-INSERT INTO public.usuario (nome, tel, nif, cod_postal, id_tipo_usuario, rua, n_porta)
+INSERT INTO public.usuario (nome, tel, nif, cod_postal, id_tipo_usuario, rua, n_porta, email, password)
 VALUES
-    ('Joao Antonio', '+351933456789', 123456789, '1', 1, 'Rua Pereiras', 10),
-    ('Carlos Ferreira', '+351911223344', 555444333, '1', 2, 'Rua das Oficinas', 5),
-    ('Maria Silva', '+351912345678', 987654321, '1', 3, 'Avenida Central', 20),
-    ('Rodrigo Anjos', '+351912340078', 987333321, '1', 4, 'Rua Tome de SOusa', 10),
-    ('Ricardo Santos', '+351912345611', 987654000, '1', 5, 'Rua do Conquitador', 20);
+    ('Joao Antonio', '+351933456789', 123456789, '1', 1, 'Rua Pereiras', 10, 'admin@example.pt', '1234'),
+    ('Carlos Ferreira', '+351911223344', 555444333, '1', 2, 'Rua das Oficinas', 5, 'tecnico@example.pt', '1234'),
+    ('Maria Silva', '+351912345678', 987654321, '1', 3, 'Avenida Central', 20, 'user@example.pt', '1234'),
+    ('Rodrigo Anjos', '+351912340078', 987333321, '1', 4, 'Rua Tome de SOusa', 10, 'gestor@example.pt', '1234'),
+    ('Ricardo Santos', '+351912345611', 987654000, '1', 5, 'Rua do Conquitador', 20, 'rececionista@example.pt', '1234');
 
 -- Tipos de espaço desportivo
 INSERT INTO public.tipo_espaco_desportivo (id_tipo_espaco, tipo)
